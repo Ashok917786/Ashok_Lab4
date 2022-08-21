@@ -1,0 +1,15 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Question_9`()
+BEGIN
+Select s.SUPP_ID,s.SUPP_NAME, avg(r.RAT_RATSTARS),
+case
+ when r.RAT_RATSTARS = 5 then 'Excellent Service'
+ when r.RAT_RATSTARS = 4 then 'Good Service'
+ when r.RAT_RATSTARS between 2 and 3 then 'Average Service'
+ else 
+ 'Poor Service' 
+ end as Type_of_Service  from rating r 
+inner join `order-directory`.order o on r.ORD_ID= o.ORD_ID
+inner join `order-directory`.supplier_pricing sp on sp.PRICING_ID = o.PRICING_ID
+inner join `order-directory`.supplier s on s.SUPP_ID = sp.SUPP_ID
+group by sp.SUPP_ID ;
+END
